@@ -5,6 +5,7 @@ from fastapi import FastAPI, UploadFile, File
 from fastapi.middleware.cors import CORSMiddleware
 
 from asr.whisper_client import transcribe_audio
+from tts.router import router as tts_router
 
 app = FastAPI(title="Voice LLM - ASR Service")
 
@@ -15,6 +16,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+app.include_router(tts_router)
 
 @app.post("/transcribe")
 async def transcribe(file: UploadFile = File(...)):
