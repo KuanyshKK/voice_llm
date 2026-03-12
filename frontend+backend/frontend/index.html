@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Voice Assistant — Almaty</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Voice Assistant</h1>
+      <p class="subtitle">AI leisure planner for Almaty</p>
+    </header>
+
+    <div class="orb-wrapper" id="orbWrapper">
+      <!-- Decorative rings -->
+      <div class="rings">
+        <div class="ring ring-1"></div>
+        <div class="ring ring-2"></div>
+        <div class="ring ring-3"></div>
+      </div>
+
+      <!-- Main orb button -->
+      <button class="orb" id="orb" aria-label="Record voice message">
+        <!-- Microphone icon -->
+        <svg
+          class="icon-mic"
+          id="iconMic"
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          aria-hidden="true"
+        >
+          <rect x="9" y="2" width="6" height="12" rx="3" />
+          <path d="M5 10a7 7 0 0 0 14 0" />
+          <line x1="12" y1="19" x2="12" y2="22" />
+          <line x1="8" y1="22" x2="16" y2="22" />
+        </svg>
+
+        <!-- Thinking dots (shown while processing) -->
+        <div class="icon-thinking" id="iconThinking" aria-hidden="true">
+          <span class="dot"></span>
+          <span class="dot"></span>
+          <span class="dot"></span>
+        </div>
+
+        <!-- Wave bars (shown while playing) -->
+        <div class="icon-wave" id="iconWave" aria-hidden="true">
+          <span class="bar"></span>
+          <span class="bar"></span>
+          <span class="bar"></span>
+          <span class="bar"></span>
+          <span class="bar"></span>
+        </div>
+      </button>
+    </div>
+
+    <p class="status-text" id="statusText">Tap to speak</p>
+
+    <div class="transcript-area" id="transcriptArea">
+      <div class="message-card user-card">
+        <span class="msg-label">You</span>
+        <p class="msg-text" id="userText"></p>
+      </div>
+      <div class="message-card ai-card">
+        <span class="msg-label">Assistant</span>
+        <p class="msg-text" id="aiText"></p>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
