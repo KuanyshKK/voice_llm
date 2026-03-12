@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>ASR Тест</title>
+    <style>
+        body { font-family: Arial; display: flex; flex-direction: column; align-items: center; margin-top: 100px; }
+        button { padding: 20px 40px; font-size: 20px; cursor: pointer; border-radius: 10px; border: none; }
+        #btn { background: #4CAF50; color: white; }
+        #btn.recording { background: #f44336; }
+        #result { margin-top: 30px; font-size: 18px; max-width: 600px; text-align: center; }
+    </style>
+</head>
+<body>
+    <h1>ASR Тест (Whisper)</h1>
+    <button id="btn" onclick="toggle()">Нажми и говори</button>
+    <div id="result"></div>
+
+    <script>
+        let mediaRecorder;
+        let chunks = [];
+        let recording = false;
+
+        async function toggle() {
+            if (!recording) {
+                const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                mediaRecorder = new MediaRecorder(stream);
+                chunks = [];
+                mediaRecorder.ondataavailable = e => chunks.push(e.data);
+                mediaRecorder.onstop = sendAudio;
+                mediaRecorder.start();
+                recording = true;
+                document.getElementById('btn').textContent = 'Остановить';
+                document.getElementById('btn').classList.add('recording');
+            } else {
+                mediaRecorder.stop();
+                mediaRecorder.stream.getTracks().forEach(t => t.stop());
+                recording = false;
+                document.getElementById('btn').textContent = 'Нажми и говори';
+                document.getElementById('btn').classList.remove('recording');
+            }
+        }
+
+        async function sendAudio() {
+            const blob = new Blob(chunks, { type: 'audio/webm' });
+            const formData = new FormData();
+            formData.append('file', blob, 'audio.webm');
+            document.getElementById('result').textContent = 'Распознаю...';
+
+            const res = await fetch('http://127.0.0.1:8000/transcribe', {
+                method: 'POST',
+                body: formData,
+            });
+            const data = await res.json();
+            document.getElementById('result').textContent = 'Результат: ' + data.text;
+        }
+    </script>
+</body>
+</html>
